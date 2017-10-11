@@ -1,3 +1,12 @@
+Author's notes:
+
+This was written and tested on macOS Sierra (10.12.6) and Python 3.6.3 from brew.
+
+There are Python 3.6 specific bits in the code.  If you need this to run with a different version of python, 
+please let me know.
+
+End note
+
 Write a "vf_start" tool to start the services of a Veriflow system
 specified in the procs.cfg file given below.  The tool takes the
 configuration file as an input parameter.  Its usage is:
@@ -14,7 +23,9 @@ count and startup order, and then exits.  It prints out the list of
 process IDs (PIDs) for the services using this format, one service
 per line:
 
-<name>:<comma-separated-list-of-PIDs>
+~~~
+<name>:<comma-separated-list-of-PIDs> 
+~~~
 
 By default (i.e. without the "-s" option) the output is sorted by the
 startup order of the services.  If "-s" is given, the output is sorted
