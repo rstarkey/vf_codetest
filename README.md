@@ -1,7 +1,7 @@
 Author's notes
 ---------------
 
-This was written and tested on macOS Sierra (10.12.6) and Python 3.6.3 from brew.
+This was written and tested on macOS Sierra (10.12.6) and Python3 (3.6.3) from brew.
 
 There are Python 3.6 specific bits in the code.  If you need this to run with a different version of python, 
 please let me know.
@@ -13,12 +13,15 @@ Write a "vf_start" tool to start the services of a Veriflow system
 specified in the procs.cfg file given below.  The tool takes the
 configuration file as an input parameter.  Its usage is:
 
+~~~
 % vf_start [-h] [-s] [-c <config-file>]
+~~~
 
 where:
-  -h   prints the help menu
-  -s   sort the output by service name
-  -c   specifies the config file
+
+    -h   prints the help menu
+    -s   sort the output by service name
+    -c   specifies the config file
 
 The tool spawns the processes for the services, in their required
 count and startup order, and then exits.  It prints out the list of
