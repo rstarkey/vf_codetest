@@ -1,11 +1,13 @@
-Author's notes:
+Author's notes
+---------------
 
 This was written and tested on macOS Sierra (10.12.6) and Python 3.6.3 from brew.
 
 There are Python 3.6 specific bits in the code.  If you need this to run with a different version of python, 
 please let me know.
 
-End note
+Code spec
+---------
 
 Write a "vf_start" tool to start the services of a Veriflow system
 specified in the procs.cfg file given below.  The tool takes the
