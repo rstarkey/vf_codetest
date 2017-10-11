@@ -22,7 +22,8 @@ by the service name.
 
 Below is an example configuration file and description of its fields.
 
-===================== procs.cfg =====================
+~~~
+#===================== procs.cfg =====================
 # The list of application services to run.
 #
 # Each service is configured with these parameters:
@@ -47,4 +48,5 @@ modeler::5:/etc/passwd:/tmp/vf_mod.out::/bin/wc -l
 brain:3:::/tmp/vf_nn.out::/bin/bash -c "echo `date` : $$"
 db::100:::/tmp/vf_db.err:/bin/cat /tmp/missing_file
 cache:1:2::/tmp/vf_cache.out:/tmp/vf_cache.err:/bin/cat /tmp/missing_file
-===================== procs.cfg =====================
+#===================== procs.cfg =====================
+~~~
