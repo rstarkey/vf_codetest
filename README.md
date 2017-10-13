@@ -6,6 +6,10 @@ This was written and tested on macOS Sierra (10.12.6) and Python3 (3.6.3) from b
 There are Python 3.6 specific bits in the code.  If you need this to run with a different version of python, 
 please let me know.
 
+Unittests require nosetests.  To fire them off run:
+
+    nosetests tests
+
 Code spec
 ---------
 

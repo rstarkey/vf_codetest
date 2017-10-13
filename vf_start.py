@@ -19,13 +19,6 @@ import shlex
 from operator import itemgetter
 # from pprint import pprint
 
-# TODO Unit test to check for good config
-# TODO Unit test to check spawning works
-# TODO Unit test to check if start order is correct
-# TODO unit test to check if output sort order is correct
-# TODO unit test to check if config regex is working
-# TODO unit test for required config fields
-
 # Global to define config file fields, this way you don't have to run through my ugly code to add new fields
 CONFIG_FIELDS = OrderedDict({'name': True, 'count': '1', 'order': '0', 'stdin': '/dev/null', 'stdout': '/dev/null',
                             'stderr': '/dev/null', 'cmd': True})
@@ -45,17 +38,16 @@ class VFConfig:
     filename = None
     procs = []
 
-    def __init__(self, filename):
-        self.filename = filename
-        self.read(filename)
-        if self.procs:
-            self.start_order_sort()
+    def __init__(self):
+        # unit tests were breaking, need to clean out the list first
+        self.procs = []
 
     def read(self, filename):
         """
         parse and validate config
         :param filename: file system path of the config file to be opened and parsed
         """
+        self.filename = filename
         # This regex sucks but it'll do for now
         # For every delimiter found, look forward to see if there is an even number of quotes, if so, delimiter!
         # this allows for fun stuff like blah:/bin/bash -c "echo `date` : $$ (nice one, BTW)
@@ -98,8 +90,9 @@ class VFConfig:
                             raise ConfigError(f"Invalid config line format at {filename}:{_line_num}: \"{_line}\"")
                 except ConfigError as err:
                     # Stop if there is a config error and display which line we don't like
-                    logging.exception(err, exc_info=False)
-                    sys.exit(1)
+                    logging.fatal(err)
+                    raise
+#                    sys.exit(1)
 
         except OSError:
             raise
@@ -119,6 +112,7 @@ class VFProcessMgr:
     pidlist = OrderedDict()
 
     def __init__(self):
+        self.pidlist = OrderedDict()
         pass
 
     @staticmethod
@@ -181,19 +175,15 @@ class VFProcessMgr:
 
             self.pidlist.update({cfg['name']: _pidlist})
 
-
-def sortoutput(args, alist):
-    """
-    sort output based on args passed on command line (-s)
-    :param args: argparse object
-    :param alist: a list of tups to sort
-    """
-    if args.svc_sort_order:
-        logging.debug(f"sorting output because -s")
-        # sort the tuple by the first element
-        alist = OrderedDict(sorted(alist.items(), key=lambda x: x[0]))
-
-    return alist
+    def sort_output(self, args):
+        """
+        sort output based on args passed on command line (-s)
+        :param args: argparse object
+        """
+        if args.svc_sort_order is True:
+            logging.debug(f"sorting output because -s")
+            # sort the tuple by the first element
+            self.pidlist = OrderedDict(sorted(self.pidlist.items(), key=lambda x: x[0]))
 
 
 def main(args, loglevel):
@@ -211,13 +201,18 @@ def main(args, loglevel):
         logging.error("Cannot run as root.")
         sys.exit(1)
 
+    cfg = VFConfig()
     # get config
-    cfg = VFConfig(args.cfg_file)
+    cfg.read(args.cfg_file)
+    if cfg.procs:
+        # sort it by start order
+        cfg.start_order_sort()
 
     procmgr = VFProcessMgr()
     procmgr.startup(cfg.procs)
+    procmgr.sort_output(args)
 
-    for _name, _pids in sortoutput(args, procmgr.pidlist).items():
+    for _name, _pids in procmgr.pidlist.items():
             print(f"{_name}:", ','.join(str(x) for x in _pids))
 
 
