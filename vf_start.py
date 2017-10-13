@@ -20,6 +20,8 @@ from operator import itemgetter
 # from pprint import pprint
 
 # Global to define config file fields, this way you don't have to run through my ugly code to add new fields
+# Fields with a True value are required
+# Fields with a False value are not required
 CONFIG_FIELDS = OrderedDict({'name': True, 'count': '1', 'order': '0', 'stdin': '/dev/null', 'stdout': '/dev/null',
                             'stderr': '/dev/null', 'cmd': True})
 
