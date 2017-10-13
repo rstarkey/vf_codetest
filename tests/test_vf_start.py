@@ -129,8 +129,7 @@ class TestVFPRocess:
         class FakeArgs:
             svc_sort_order = False
 
-        args = FakeArgs()
-        self.procmgr.sort_output(args)
+        self.procmgr.sort_output(FakeArgs())
         assert list(self.procmgr.pidlist)[0] == "zzz"
 
     def test_sorted_output(self):
@@ -141,6 +140,5 @@ class TestVFPRocess:
         class FakeArgs:
             svc_sort_order = True
 
-        args = FakeArgs()
-        self.procmgr.sort_output(args)
+        self.procmgr.sort_output(FakeArgs())
         assert list(self.procmgr.pidlist)[0] == "aaa"
